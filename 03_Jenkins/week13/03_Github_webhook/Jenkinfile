@@ -36,17 +36,17 @@ pipeline {
         stage('Clear Docker Components') {
             steps {
                 script {
-                    // Check if any containers are running before trying to stop them
-                    def runningContainers = sh(script: 'docker ps -q', returnStdout: true).trim()
-                    if (runningContainers) {
-                        sh "docker stop ${runningContainers}"
+                    def containers = sh(script: 'docker ps -a -q', returnStdout: true).trim()
+                    if (containers) {
+                        sh "docker stop $containers"
+                        sh "docker rm $containers"
                     }
-                    sh 'docker rm $(docker ps -a -q)' 
                     sh 'docker rmi $(docker images -q)'
                     sh 'docker system prune -af'
                 }
             }
         }
+
 
         stage('Deploy') {
             steps {
