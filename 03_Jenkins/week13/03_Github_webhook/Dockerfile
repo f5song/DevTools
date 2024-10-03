@@ -1,17 +1,15 @@
-# Dockerfile
+# ใช้ base image ของ Python 3.9
 FROM python:3.9
 
-# Set the working directory in the container
+# ตั้ง working directory ใน container
 WORKDIR /code
 
-# Copy the dependencies file to the working directory
-COPY requirements.txt .
-COPY main.py .
+# คัดลอกไฟล์ requirements.txt และ main.py ไปยัง working directory
+COPY requirements.txt ./
+COPY main.py ./
 
-# Install any dependencies
+# ติดตั้ง dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the content of the local src directory to the working directory
-
-# Command to run the application
+# คำสั่งในการรันแอปพลิเคชัน
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
